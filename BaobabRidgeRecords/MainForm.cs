@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,7 +13,8 @@ namespace BaobabRidgeRecords
         private readonly string filePath =
             Path.Combine(Application.StartupPath, "animals.txt");
 
-        private DataGridView dgvAnimals;
+        // The grid (dgvAnimals) is created in the designer (MainForm.Designer.cs),
+        // so it is not declared again here.
         private List<Animal> animals = new List<Animal>();
 
         public MainForm()
@@ -34,7 +34,7 @@ namespace BaobabRidgeRecords
 
         private void FindOrCreateGrid()
         {
-           
+
             dgvAnimals = FindGrid(this);
 
             if (dgvAnimals == null)
@@ -129,7 +129,7 @@ namespace BaobabRidgeRecords
 
                     string[] fields = line.Split('|');
 
-                   
+
                     if (fields.Length != 7)
                     {
                         skippedLines++;
@@ -173,7 +173,7 @@ namespace BaobabRidgeRecords
 
                 animals = loadedAnimals;
 
-                
+
                 dgvAnimals.DataSource = null;
                 dgvAnimals.DataSource = animals;
 
@@ -209,6 +209,11 @@ namespace BaobabRidgeRecords
         public void RefreshAnimals()
         {
             LoadAnimals();
+        }
+
+        // Runs when the user clicks the Add button. The code is added in a later commit.
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
         }
     }
 }
