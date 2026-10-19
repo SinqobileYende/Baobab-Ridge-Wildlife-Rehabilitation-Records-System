@@ -278,8 +278,51 @@ namespace BaobabRidgeRecords
                 return;
             }
 
-            // Temporary message so we can test. This gets replaced in the next commit.
-            MessageBox.Show("All inputs are valid.");
+            // All checks passed, so create the animal
+            Animal animal = new Animal();
+            animal.Id = id;
+            animal.Name = name;
+            animal.Species = species;
+            animal.Age = age;
+            animal.Score = score;
+
+            // Work out the status and housing unit from the score (the one shared classification method)
+            AnimalClassifier.ClassifyAnimal(animal);
+
+            // Save the animal to the end of animals.txt.
+            // Writing to the file can fail, so it is inside try...catch with a friendly message for each problem.
+            try
+            {
+                AnimalFileHandler.AppendAnimalToFile(animal);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You do not have permission to change animals.txt. It may be set to read-only.", "File error");
+                return;
+            }
+            catch (DirectoryNotFoundException)
+            {
+                // This must come before IOException, because it is a type of IOException
+                MessageBox.Show("The folder for animals.txt could not be found.", "File error");
+                return;
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("animals.txt is being used by another program. Close it and try again.", "File error");
+                return;
+            }
+
+            // Show the user the status and housing unit the program worked out
+            MessageBox.Show(animal.Name + " was added.\n\n" +
+                            "Status: " + animal.Status + "\n" +
+                            "Housing unit: " + animal.HousingUnit,
+                            "Animal added");
+
+            // Empty the boxes, ready for the next animal
+            ClearInputs();
+
+            // Reload the grid so the new animal appears (Vodka's View method)
+            LoadAnimals();
         }
 
         // Shows an error message and puts the cursor back in the box that has the problem.
