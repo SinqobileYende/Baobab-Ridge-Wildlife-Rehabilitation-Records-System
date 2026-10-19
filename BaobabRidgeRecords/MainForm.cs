@@ -215,5 +215,47 @@ namespace BaobabRidgeRecords
         private void btnAdd_Click(object sender, EventArgs e)
         {
         }
+
+        /* Method to delete a record*/
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+
+            if (dgvAnimals.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select an animal to delete");
+                return;
+            }
+            string id = dgvAnimals.SelectedRows[0].Cells[0].Value.ToString();
+            string name = dgvAnimals.SelectedRows[0].Cells[1].Value.ToString();
+
+            DialogResult answer = MessageBox.Show($"Delete ID: {id} ({name})? This can not be undone.", "Confirm Delete", MessageBoxButtons.YesNo);
+            if (answer != DialogResult.Yes) return;
+            Animal delete = null;
+            foreach (Animal animal in animals)
+            {
+
+                if (animal.Id == id)
+                {
+                    delete = animal; break;
+                }
+            }
+            animals.Remove(delete);
+            try
+            {
+                AnimalFileHandler.SaveAllAnimals(
+                    animals);
+               
+
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("animals.txt is open in another program. Close it and try again");
+
+                LoadAnimals(); return;
+            }
+            LoadAnimals();
+
+        }
+
     }
 }
