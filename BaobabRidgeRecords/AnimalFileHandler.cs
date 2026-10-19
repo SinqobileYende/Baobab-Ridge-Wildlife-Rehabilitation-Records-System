@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace BaobabRidgeRecords
 {
@@ -51,6 +52,17 @@ namespace BaobabRidgeRecords
             }
 
             File.AppendAllText(FilePath, newline);
+        }
+
+        /* Add SaveAllAnimals method to rewrite animals.txt */
+        public static void SaveAllAnimals(List<Animal> animals)
+        {
+            List<string> lines = new List<string>();
+            foreach (Animal animal in animals) 
+            {
+                lines.Add(animal.ToFileLine());   
+            }
+            File.WriteAllLines(FilePath,lines );
         }
     }
 }
