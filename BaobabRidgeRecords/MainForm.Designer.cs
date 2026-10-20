@@ -190,6 +190,8 @@
             // 
             // btnClear
             // 
+            btnClear.Location = new Point(214, 180);
+            btnClear.Margin = new Padding(3, 2, 3, 2);
             btnClear.Location = new Point(214, 181);
             btnClear.Margin = new Padding(3, 2, 3, 2);
             btnClear.Name = "btnClear";
@@ -253,6 +255,7 @@
             btnDelete.TabIndex = 1;
             btnDelete.Text = "Delete Selected";
             btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // dgvAnimals
             // 
@@ -309,7 +312,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(947, 424);
+            ClientSize = new Size(947, 452);
             Controls.Add(grpSummary);
             Controls.Add(grpAnimals);
             Controls.Add(grpAnimalDetails);
