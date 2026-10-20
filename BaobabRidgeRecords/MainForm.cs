@@ -214,6 +214,135 @@ namespace BaobabRidgeRecords
         // Runs when the user clicks the Add button. The code is added in a later commit.
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            // Read the boxes and remove spaces at the start and end.
+            // The ID is changed to capital letters so "wr-0007" is accepted and saved as "WR-0007".
+            string id = txtAnimalId.Text.Trim().ToUpper();
+            string name = txtName.Text.Trim();
+            string species = txtSpecies.Text.Trim();
+            string ageText = txtAge.Text.Trim();
+            string scoreText = txtScore.Text.Trim();
+
+            // Check the ID format
+            if (!AnimalValidator.IsValidId(id))
+            {
+                ShowError("Animal ID must be WR- followed by exactly 4 digits, for example WR-0007.", txtAnimalId);
+                return;
+            }
+
+            // Check the ID is not already used.
+            // Reading the file can fail, so it is inside try...catch to stop the program crashing.
+            try
+            {
+                if (AnimalFileHandler.IdExists(id))
+                {
+                    ShowError("Animal ID " + id + " is already used. Please enter a different ID.", txtAnimalId);
+                    return;
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You do not have permission to read animals.txt.", "File error");
+                return;
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("animals.txt is being used by another program. Close it and try again.", "File error");
+                return;
+            }
+
+            // Check the name and species
+            if (!AnimalValidator.IsValidText(name))
+            {
+                ShowError("Name must be 1 to 30 characters and must not contain the | character.", txtName);
+                return;
+            }
+
+            if (!AnimalValidator.IsValidText(species))
+            {
+                ShowError("Species must be 1 to 30 characters and must not contain the | character.", txtSpecies);
+                return;
+            }
+
+            // Check the age and recovery score are whole numbers from 0 to 100
+            int age;
+            if (!AnimalValidator.IsValidNumber(ageText, out age))
+            {
+                ShowError("Age must be a whole number between 0 and 100.", txtAge);
+                return;
+            }
+
+            int score;
+            if (!AnimalValidator.IsValidNumber(scoreText, out score))
+            {
+                ShowError("Recovery Score must be a whole number between 0 and 100.", txtScore);
+                return;
+            }
+
+            // All checks passed, so create the animal
+            Animal animal = new Animal();
+            animal.Id = id;
+            animal.Name = name;
+            animal.Species = species;
+            animal.Age = age;
+            animal.Score = score;
+
+            // Work out the status and housing unit from the score (the one shared classification method)
+            AnimalClassifier.ClassifyAnimal(animal);
+
+            // Save the animal to the end of animals.txt.
+            // Writing to the file can fail, so it is inside try...catch with a friendly message for each problem.
+            try
+            {
+                AnimalFileHandler.AppendAnimalToFile(animal);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You do not have permission to change animals.txt. It may be set to read-only.", "File error");
+                return;
+            }
+            catch (DirectoryNotFoundException)
+            {
+                // This must come before IOException, because it is a type of IOException
+                MessageBox.Show("The folder for animals.txt could not be found.", "File error");
+                return;
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("animals.txt is being used by another program. Close it and try again.", "File error");
+                return;
+            }
+
+            // Show the user the status and housing unit the program worked out
+            MessageBox.Show(animal.Name + " was added.\n\n" +
+                            "Status: " + animal.Status + "\n" +
+                            "Housing unit: " + animal.HousingUnit,
+                            "Animal added");
+
+            // Empty the boxes, ready for the next animal
+            ClearInputs();
+
+            // Reload the grid so the new animal appears (Vodka's View method)
+            LoadAnimals();
         }
+
+        // Shows an error message and puts the cursor back in the box that has the problem.
+        private void ShowError(string message, TextBox box)
+        {
+            MessageBox.Show(message, "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            box.Focus();
+            box.SelectAll();
+        }
+
+        // Empties all the input boxes and puts the cursor back in the ID box, ready for the next animal.
+        private void ClearInputs()
+        {
+            txtAnimalId.Clear();
+            txtName.Clear();
+            txtSpecies.Clear();
+            txtAge.Clear();
+            txtScore.Clear();
+            txtAnimalId.Focus();
+        }
+    
     }
 }
