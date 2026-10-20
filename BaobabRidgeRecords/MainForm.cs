@@ -388,6 +388,75 @@ namespace BaobabRidgeRecords
             EditModeOff();
 
         }
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            string id= txtAnimalId.Text.Trim().ToUpper();
+            string name = txtName.Text.Trim();
+            string species= txtSpecies.Text.Trim();
+            string ageText= txtAge.Text.Trim();
+            string scoreText= txtScore.Text.Trim();
+
+            if (!AnimalValidator.IsValidText(name))
+            {
+                ShowError("Name must be between 1 and 30 characters and must not contain characters", txtName);
+                   
+                return;
+            }
+            if (!AnimalValidator.IsValidText(species))
+            {
+                ShowError("Species must be between 1 and 30 characters and must not contain characters", txtSpecies);
+               
+                return;
+            }
+            int age;
+            if (!AnimalValidator.IsValidNumber(ageText, out age))
+            {
+                ShowError("Age must be a whole number between 0 and 100", txtAge);
+              
+                return;
+            }
+            int score;
+            if (!AnimalValidator.IsValidNumber(scoreText, out score))
+            {
+                ShowError("Age must be a whole number between 0 and 100", txtScore);
+
+                return;
+            }
+
+            //Find the animal you want to edit
+            Animal update= animals.Find(a=>a.Id==id) ;
+            if (update == null) 
+            {
+                MessageBox.Show("Animal could not be found");
+                return;
+
+            }
+            update.Name= name;  
+            update.Species= species;
+            update.Age= age;
+            update.Score = score;
+
+            //Recalculate status and housing 
+            AnimalClassifier.ClassifyAnimal(update);
+
+            try { AnimalFileHandler.SaveAllAnimals(animals); }
+            catch (IOException)
+            {
+                MessageBox.Show("Animals.txt is open in anoter program. Close and try again");
+                LoadAnimals();
+                return;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("animals.txt is read only.");
+                LoadAnimals(); return;
+            }
+
+            LoadAnimals();
+            MessageBox.Show(update.Name + "was updated. \n\n Status: " + update.Status + "\n Housing Unit: " + update.HousingUnit, "Animal updated");
+            EditModeOff();
+
+        }
 
     }
 }
