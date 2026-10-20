@@ -23,6 +23,8 @@ namespace BaobabRidgeRecords
 
             FindOrCreateGrid();
             ConfigureGrid();
+            dgvAnimals.CellClick += dgvAnimals_CellClick;
+            btnUpdate.Enabled= false;
 
             Load += MainForm_Load;
         }
@@ -343,6 +345,69 @@ namespace BaobabRidgeRecords
             txtScore.Clear();
             txtAnimalId.Focus();
         }
-    
+
+        /* Puts the form into edit mode and locks the ID box, turns off add and turns on save changes*/
+        private void EditModeOn() 
+        {
+            txtAnimalId.ReadOnly= true;
+            btnAdd.Enabled= false;
+            btnUpdate.Enabled= true;
+        }
+        /* takes the form back to Add mode and unlocks the ID box, turns on Add and turns Off save changes*/
+        private void EditModeOff()
+        {
+            txtAnimalId.ReadOnly = false;
+            btnAdd.Enabled = true;
+            btnUpdate.Enabled = false;
+            /*method to empty the box*/
+            ClearInputs();
+        }
+
+        /*Copies the selected animals details into the input boxes and switches to Edit mode*/
+
+        private void LoadAnimalsOnForm(Animal animal) 
+        {
+            txtAnimalId.Text = animal.Id;
+            txtName.Text = animal.Name;
+            txtSpecies.Text = animal.Species;
+            txtAge.Text = animal.Age.ToString();
+                txtScore.Text = animal.Score.ToString();
+            EditModeOn();
+
+        }
+        private void dgvAnimals_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            /* If the header row is selected, ignore it*/
+            if (e.RowIndex < 0) return;         
+            Animal selected = animals[e.RowIndex];
+            LoadAnimalsOnForm(selected);
+        }
+        //runs when Clear is clicked and returns form to add mode
+        private void btnClear_Click(object sender, EventArgs e) 
+        {
+            EditModeOff();
+
+        }
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
