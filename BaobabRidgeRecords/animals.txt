@@ -1,0 +1,8 @@
+﻿WR-0001|Liam|African Penguin|4|85|Release-Ready|Pre-Release Camp
+WR-0002|Sinqo|Serval|3|62|Recovering|Outdoor Enclosure
+WR-0003|Nthato|Cape Vulture|7|15|Critical|Intensive Care Unit
+WR-0004|Ray|Pangolin|5|33|Serious|High-Dependency Ward
+WR-0005|Dewald|Honey Badger|6|48|Stable|Recovery Ward
+WR-0006|Tumi|Black Rhino|2|91|Release-Ready|Pre-Release Camp
+WR-0007|Lesedi|Leopard Tortoise|12|70|Recovering|Outdoor Enclosure
+WR-0008|Kea|Spotted Hyena|4|25|Serious|High-Dependency Ward
