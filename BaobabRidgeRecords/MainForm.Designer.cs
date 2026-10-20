@@ -190,13 +190,15 @@
             // 
             // btnClear
             // 
-            btnClear.Location = new Point(214, 180);
+            btnClear.Location = new Point(214, 181);
             btnClear.Margin = new Padding(3, 2, 3, 2);
             btnClear.Name = "btnClear";
             btnClear.Size = new Size(83, 26);
             btnClear.TabIndex = 12;
             btnClear.Text = "Clear";
             btnClear.UseVisualStyleBackColor = true;
+            btnClear.Click += btnClear_Click;
+            btnClear.MouseCaptureChanged += btnClear_Click;
             // 
             // btnUpdate
             // 
@@ -207,6 +209,7 @@
             btnUpdate.TabIndex = 11;
             btnUpdate.Text = "Save Changes";
             btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.Click += btnUpdate_Click;
             // 
             // grpAnimals
             // 
