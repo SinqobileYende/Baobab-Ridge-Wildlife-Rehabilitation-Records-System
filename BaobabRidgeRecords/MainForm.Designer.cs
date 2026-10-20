@@ -190,8 +190,6 @@
             // 
             // btnClear
             // 
-            btnClear.Location = new Point(214, 180);
-            btnClear.Margin = new Padding(3, 2, 3, 2);
             btnClear.Location = new Point(214, 181);
             btnClear.Margin = new Padding(3, 2, 3, 2);
             btnClear.Name = "btnClear";
@@ -211,6 +209,7 @@
             btnUpdate.TabIndex = 11;
             btnUpdate.Text = "Save Changes";
             btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.Click += btnUpdate_Click;
             // 
             // grpAnimals
             // 

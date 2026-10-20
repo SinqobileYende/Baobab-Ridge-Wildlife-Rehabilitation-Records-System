@@ -24,7 +24,7 @@ namespace BaobabRidgeRecords
             FindOrCreateGrid();
             ConfigureGrid();
             dgvAnimals.CellClick += dgvAnimals_CellClick;
-            btnUpdate.Enabled= false;
+            btnUpdate.Enabled = false;
 
             Load += MainForm_Load;
         }
@@ -390,11 +390,11 @@ namespace BaobabRidgeRecords
         }
 
         /* Puts the form into edit mode and locks the ID box, turns off add and turns on save changes*/
-        private void EditModeOn() 
+        private void EditModeOn()
         {
-            txtAnimalId.ReadOnly= true;
-            btnAdd.Enabled= false;
-            btnUpdate.Enabled= true;
+            txtAnimalId.ReadOnly = true;
+            btnAdd.Enabled = false;
+            btnUpdate.Enabled = true;
         }
         /* takes the form back to Add mode and unlocks the ID box, turns on Add and turns Off save changes*/
         private void EditModeOff()
@@ -408,54 +408,54 @@ namespace BaobabRidgeRecords
 
         /*Copies the selected animals details into the input boxes and switches to Edit mode*/
 
-        private void LoadAnimalsOnForm(Animal animal) 
+        private void LoadAnimalsOnForm(Animal animal)
         {
             txtAnimalId.Text = animal.Id;
             txtName.Text = animal.Name;
             txtSpecies.Text = animal.Species;
             txtAge.Text = animal.Age.ToString();
-                txtScore.Text = animal.Score.ToString();
+            txtScore.Text = animal.Score.ToString();
             EditModeOn();
 
         }
         private void dgvAnimals_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             /* If the header row is selected, ignore it*/
-            if (e.RowIndex < 0) return;         
+            if (e.RowIndex < 0) return;
             Animal selected = animals[e.RowIndex];
             LoadAnimalsOnForm(selected);
         }
         //runs when Clear is clicked and returns form to add mode
-        private void btnClear_Click(object sender, EventArgs e) 
+        private void btnClear_Click(object sender, EventArgs e)
         {
             EditModeOff();
 
         }
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            string id= txtAnimalId.Text.Trim().ToUpper();
+            string id = txtAnimalId.Text.Trim().ToUpper();
             string name = txtName.Text.Trim();
-            string species= txtSpecies.Text.Trim();
-            string ageText= txtAge.Text.Trim();
-            string scoreText= txtScore.Text.Trim();
+            string species = txtSpecies.Text.Trim();
+            string ageText = txtAge.Text.Trim();
+            string scoreText = txtScore.Text.Trim();
 
             if (!AnimalValidator.IsValidText(name))
             {
                 ShowError("Name must be between 1 and 30 characters and must not contain characters", txtName);
-                   
+
                 return;
             }
             if (!AnimalValidator.IsValidText(species))
             {
                 ShowError("Species must be between 1 and 30 characters and must not contain characters", txtSpecies);
-               
+
                 return;
             }
             int age;
             if (!AnimalValidator.IsValidNumber(ageText, out age))
             {
                 ShowError("Age must be a whole number between 0 and 100", txtAge);
-              
+
                 return;
             }
             int score;
@@ -467,16 +467,16 @@ namespace BaobabRidgeRecords
             }
 
             //Find the animal you want to edit
-            Animal update= animals.Find(a=>a.Id==id) ;
-            if (update == null) 
+            Animal update = animals.Find(a => a.Id == id);
+            if (update == null)
             {
                 MessageBox.Show("Animal could not be found");
                 return;
 
             }
-            update.Name= name;  
-            update.Species= species;
-            update.Age= age;
+            update.Name = name;
+            update.Species = species;
+            update.Age = age;
             update.Score = score;
 
             //Recalculate status and housing 
@@ -496,11 +496,12 @@ namespace BaobabRidgeRecords
             }
 
             LoadAnimals();
-            MessageBox.Show(update.Name + "was updated. \n\n Status: " + update.Status + "\n Housing Unit: " + update.HousingUnit, "Animal updated");
+            MessageBox.Show(update.Name + " was updated. \n\n Status: " + update.Status + "\n Housing Unit: " + update.HousingUnit, "Animal updated");
             EditModeOff();
 
         }
 
+       
     }
 }
 
